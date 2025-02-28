@@ -22,3 +22,8 @@ variable "oci_private_key" {
     type = string
     description = "OCI private key"
 }
+
+variable "oci_compartment" {
+    type = string
+    description = "OCI compartment"
+}
