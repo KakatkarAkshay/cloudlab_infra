@@ -2,7 +2,7 @@ resource "oci_core_virtual_network" "scorpion_vcn" {
     compartment_id = var.oci_compartment
     display_name = "Scorpion Cloud Network"
     cidr_block = "10.0.0.0/16"
-    dns_label = "scorpion_vcn"
+    is_ipv6enabled = true
 }
 
 resource "oci_core_subnet" "scorpion_subnet" {
@@ -10,7 +10,6 @@ resource "oci_core_subnet" "scorpion_subnet" {
   vcn_id = oci_core_virtual_network.scorpion_vcn.id
   compartment_id = var.oci_compartment
   display_name = "Scorpion Subnet"
-  dns_label = "scorpion_subnet"
   security_list_ids = [oci_core_security_list.sl.id]
   route_table_id = oci_core_route_table.rt.id
   prohibit_public_ip_on_vnic = false

@@ -5,7 +5,7 @@ terraform {
       name = "infra"
     }
   }
-  
+
   required_providers {
     oci = {
       source = "oracle/oci"
