@@ -45,3 +45,21 @@ variable "oci_instance_memory_in_gb" {
     description = "OCI instance memory in GB"
     default = 6
 }
+
+variable "oci_boot_volume_size_in_gb" {
+    type = number
+    description = "OCI boot volume size in GB"
+    default = 50
+}
+
+variable "oci_boot_volume_vpus_per_gb" {
+    type = number
+    description = "OCI boot volume vPUs per GB"
+    default = 120
+}
+
+variable "ssh_public_key" {
+    type = string
+    description = "SSH public key"
+    default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ+mkJ/o+L1kUq3NqJdfUpjilS8sd/HJ2555uKZoz7Q8 me@kakatkarakshay.dev"
+}
