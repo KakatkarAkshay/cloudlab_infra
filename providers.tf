@@ -5,3 +5,9 @@ provider "oci" {
   tenancy_ocid = var.oci_tenancy
   region       = var.oci_region
 }
+
+provider "http" {}
+
+provider "tailscale" {
+  api_key = var.tailscale_token
+}
