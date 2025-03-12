@@ -1,6 +1,7 @@
 #cloud-config
-# The above header must generally appear on the first line of a cloud config
-# file, but all other lines that begin with a # are optional comments.
+# Update and upgrade packages
+package_update: true
+package_upgrade: true
 
 runcmd:
   # Install Tailscale
