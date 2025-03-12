@@ -6,6 +6,7 @@ provider "registry.terraform.io/hashicorp/http" {
   constraints = "~> 2.0"
   hashes = [
     "h1:6mHdLUi3G6Y5WWC9Dy3GpRpw30SahM+ZjiWLBThlnwQ=",
+    "h1:syLdPUKrNIJ7mF7+ijSSUot8VIuFL/45kbN5UcHEIvU=",
     "zh:159add5739a597c08439318f67c440a90ce8444a009e7b8aabbcb9279da9191f",
     "zh:1e5fbe9a4b8d3d9f167effc03bd5324ad6ef721c23a174e98c7eb2e8b85e34e8",
     "zh:4b150790ac5948ceec4f97df4deaff835e4798049d858c20413cbdff6e610c4d",
@@ -23,8 +24,9 @@ provider "registry.terraform.io/hashicorp/http" {
 
 provider "registry.terraform.io/oracle/oci" {
   version     = "6.28.0"
-  constraints = ">= 4.67.3"
+  constraints = "6.28.0"
   hashes = [
+    "h1:EFRAkCNI6Dm2T/GgZmUTMY8CGTEXOi3Zox0yPp/QsIs=",
     "h1:p1z9NiEaLZMgyu+qfBYxL65T5T/bubVgt9Mc7LC72ZQ=",
     "zh:06b2c95b25e8af7e7f7e54180a689c3a18feba8fd5d5e68f27c819ac0cf8ae42",
     "zh:0f5de4687c0dcfb9dc9267ee985fa9f09f5755107662f1483a483430c6b839c8",
@@ -48,6 +50,7 @@ provider "registry.terraform.io/tailscale/tailscale" {
   version     = "0.18.0"
   constraints = "0.18.0"
   hashes = [
+    "h1:JckX3ZvtJEYjb3asP1eX0EF9Wfn1cWO13ySiyJo42Ys=",
     "h1:NwD1NLIyf3neHrg4wRWR7hBixkLJgPmIKahbONTTmcc=",
     "zh:06011a409a7980bbe6e2a405f31510f6f91e7fb0b9736f8875cbe0297e012c5f",
     "zh:15a33f2d197d6f1e7cdd05ade4898c3a1e8bb9e242350276358ba05398b46f4c",

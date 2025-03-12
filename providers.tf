@@ -1,19 +1,19 @@
 provider "oci" {
-  user_ocid    = var.tenancy_1_oci_user
-  fingerprint  = var.tenancy_1_oci_fingerprint
-  private_key  = var.tenancy_1_oci_private_key
-  tenancy_ocid = var.tenancy_1_oci_tenancy
-  region       = var.tenancy_1_oci_region
+  user_ocid    = var.oci_tenancy_1_user
+  fingerprint  = var.oci_fingerprint
+  private_key  = var.oci_private_key
+  tenancy_ocid = var.oci_tenancy_1
+  region       = var.oci_region
 
   alias = "tenancy_1"
 }
 
 provider "oci" {
-  user_ocid    = var.tenancy_2_oci_user
-  fingerprint  = var.tenancy_2_oci_fingerprint
-  private_key  = var.tenancy_2_oci_private_key
-  tenancy_ocid = var.tenancy_2_oci_tenancy
-  region       = var.tenancy_2_oci_region
+  user_ocid    = var.oci_tenancy_2_user
+  fingerprint  = var.oci_fingerprint
+  private_key  = var.oci_private_key
+  tenancy_ocid = var.oci_tenancy_2
+  region       = var.oci_region
 
   alias = "tenancy_2"
 }
