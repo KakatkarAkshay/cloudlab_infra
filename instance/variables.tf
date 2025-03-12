@@ -38,11 +38,6 @@ variable "oci_boot_volume_vpus_per_gb" {
   default     = 120
 }
 
-variable "oci_image_id" {
-  type        = string
-  description = "OCI image ID"
-}
-
 variable "subnet_id" {
   type        = string
   description = "Subnet ID"

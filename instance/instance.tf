@@ -20,7 +20,7 @@ resource "oci_core_instance" "karken" {
     boot_volume_size_in_gbs = var.oci_boot_volume_size_in_gb
     boot_volume_vpus_per_gb = var.oci_boot_volume_vpus_per_gb
     source_type             = "image"
-    source_id               = var.oci_image_id
+    source_id               = local.ubuntu_image_id
   }
 
   metadata = {
