@@ -45,8 +45,26 @@ variable "oci_instance_shape" {
   default     = "VM.Standard.A1.Flex"
 }
 
-variable "tailscale_token" {
+variable "cloudflare_api_token" {
   type        = string
-  description = "Tailscale token"
+  description = "The Cloudflare API token with DNS Edit permissions"
+  sensitive   = true
+}
+
+variable "tailscale_client_id" {
+  type        = string
+  description = "Tailscale client ID"
+  sensitive   = true
+}
+
+variable "tailscale_client_secret" {
+  type        = string
+  description = "Tailscale client secret"
+  sensitive   = true
+}
+
+variable "tailnet_dns_name" {
+  type        = string
+  description = "Tailnet DNS name"
   sensitive   = true
 }

@@ -19,7 +19,8 @@ provider "oci" {
 }
 
 provider "tailscale" {
-  api_key = var.tailscale_token
+  oauth_client_id     = var.tailscale_client_id
+  oauth_client_secret = var.tailscale_client_secret
 }
 
 provider "helm" {

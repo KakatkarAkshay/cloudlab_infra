@@ -68,3 +68,6 @@ output "certificate_authority_pem" {
   value = tls_self_signed_cert.k8s_ca_cert.cert_pem
 }
 
+output "bootstrap_token" {
+  value = local.bootstrap_token
+}

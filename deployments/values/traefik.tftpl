@@ -1,0 +1,21 @@
+ports:
+  web:
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
+
+certificatesResolvers:
+  prod:
+    acme:
+      email: "me@kakatkarakshay.dev"
+      storage: "/data/acme.json"
+      dnsChallenge:
+        provider: "cloudflare"
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+
+environment:
+  CF_DNS_API_TOKEN: ${cloudflare_api_token}

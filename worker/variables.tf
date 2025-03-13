@@ -64,7 +64,17 @@ variable "ssh_public_key" {
   description = "SSH public key"
 }
 
-variable "worker_join_command" {
+variable "master_ip" {
   type        = string
-  description = "Worker join command"
+  description = "Master IP"
+}
+
+variable "bootstrap_token" {
+  type        = string
+  description = "Bootstrap token"
+}
+
+variable "ca_cert_hash" {
+  type        = string
+  description = "CA certificate hash"
 }

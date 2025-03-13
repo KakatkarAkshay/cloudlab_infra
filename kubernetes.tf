@@ -1,16 +1,10 @@
-resource "helm_release" "flannel" {
-  name             = "flannel"
-  repository       = "https://flannel-io.github.io/flannel"
-  chart            = "flannel"
-  namespace        = "kube-flannel"
-  create_namespace = true
+module "kubernetes_deployments" {
+  source = "./deployments"
 
-  set = [
-    {
-      name  = "podCidr"
-      value = "10.244.0.0/16"
-    }
-  ]
+  cloudflare_api_token    = var.cloudflare_api_token
+  controller_ipv4_address = module.instance_kraken.tailscale_ipv4_address
+
+  depends_on = [module.instance_kraken, module.instance_chimera, module.instance_leviathan, module.instance_vortex]
 }
 
 locals {

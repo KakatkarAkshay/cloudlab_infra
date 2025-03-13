@@ -6,6 +6,7 @@ variable "display_name" {
 variable "oci_compartment" {
   type        = string
   description = "OCI compartment"
+  sensitive   = true
 }
 
 variable "oci_instance_shape" {
@@ -53,6 +54,7 @@ variable "operating_system_version" {
 variable "subnet_id" {
   type        = string
   description = "Subnet ID"
+  sensitive   = true
 }
 
 variable "github_username" {
@@ -64,4 +66,11 @@ variable "github_username" {
 variable "tailscale_auth_key" {
   type        = string
   description = "Tailscale auth key"
+  sensitive   = true
+}
+
+variable "tailnet_dns_name" {
+  type        = string
+  description = "Tailnet DNS name"
+  sensitive   = true
 }

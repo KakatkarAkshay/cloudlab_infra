@@ -26,7 +26,7 @@ resource "oci_core_instance" "instance" {
   metadata = {
     ssh_authorized_keys = local.ssh_keys
     user_data = base64encode(templatefile("${path.module}/cloudinit/master.tftpl", {
-      hostname            = lower(var.display_name),
+      hostname            = lower("${var.display_name}-${random_password.hostname_suffix.result}"),
       tailscale_auth_key  = var.tailscale_auth_key,
       ca_cert_pem         = base64encode(tls_self_signed_cert.k8s_ca_cert.cert_pem)
       ca_key_pem          = base64encode(tls_private_key.k8s_ca_key.private_key_pem)
@@ -51,35 +51,4 @@ resource "oci_core_instance" "instance" {
       "cloud-init status --wait > /dev/null"
     ]
   }
-}
-
-resource "time_sleep" "wait_for_reboot" {
-  depends_on      = [oci_core_instance.instance]
-  create_duration = "3m"
-}
-
-resource "ssh_resource" "worker_join_command" {
-  host        = oci_core_instance.instance.public_ip
-  user        = "ubuntu"
-  private_key = tls_private_key.ssh_host_key.private_key_pem
-  commands    = ["kubeadm token create --print-join-command"]
-
-  depends_on = [time_sleep.wait_for_reboot]
-}
-
-resource "ssh_resource" "tailscale_ipv4_address" {
-  host        = oci_core_instance.instance.public_ip
-  user        = "ubuntu"
-  private_key = tls_private_key.ssh_host_key.private_key_pem
-  commands    = ["tailscale ip -4"]
-
-  depends_on = [time_sleep.wait_for_reboot]
-}
-
-output "worker_join_command" {
-  value = ssh_resource.worker_join_command.result
-}
-
-output "tailscale_ipv4_address" {
-  value = trimspace(chomp(ssh_resource.tailscale_ipv4_address.result))
 }

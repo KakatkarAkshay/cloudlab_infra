@@ -1,0 +1,6 @@
+flannel:
+  args:
+    - "--ip-masq"
+    - "--kube-subnet-mgr"
+    - "--flannel-ipv6-masq"
+    - ""

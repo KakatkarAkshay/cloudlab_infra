@@ -8,6 +8,14 @@ resource "tls_private_key" "k8s_ca_key" {
   ecdsa_curve = "P384"
 }
 
+# Generate the CA certificate hash
+data "external" "ca_cert_hash" {
+  program = ["bash", "-c", <<EOT
+    echo '{"hash": "'"$(echo "${tls_private_key.k8s_ca_key.public_key_pem}" | openssl pkey -pubin -outform der | openssl dgst -sha256 | cut -d " " -f 2)"'"}' 
+  EOT
+  ]
+}
+
 # Generate the API Server certificate
 resource "tls_private_key" "k8s_apiserver_key" {
   algorithm   = "ECDSA"
@@ -47,4 +55,8 @@ output "ssh_public_key" {
 
 output "client_key_pem" {
   value = tls_private_key.k8s_client_key.private_key_pem
+}
+
+output "ca_cert_hash" {
+  value = data.external.ca_cert_hash.result.hash
 }

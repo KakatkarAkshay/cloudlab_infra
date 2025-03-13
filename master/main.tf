@@ -13,5 +13,9 @@ terraform {
       source  = "toowoxx/ssh"
       version = "1.0.1"
     }
+    tailscale = {
+      source  = "tailscale/tailscale"
+      version = "0.18.0"
+    }
   }
 }

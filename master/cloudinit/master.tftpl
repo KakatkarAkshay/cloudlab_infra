@@ -98,6 +98,9 @@ write_files:
       certificateKey: "${certificate_key}"
       nodeRegistration:
         criSocket: "unix:///run/containerd/containerd.sock"
+        kubeletExtraArgs:
+          - name: node-ip
+            value: "MASTER_IPV4_ADDRESS"
         taints:
           - key: "node-role.kubernetes.io/control-plane"
             value: "true"
@@ -292,6 +295,13 @@ write_files:
       echo "Kubernetes master node setup completed successfully!"
     permissions: "0755"
 
+  - path: /etc/networkd-dispatcher/routable.d/50-tailscale
+    content: |
+      #!/bin/sh
+
+      ethtool -K $(ip -o route get 8.8.8.8 | cut -f 5 -d " ") rx-udp-gro-forwarding on rx-gro-list off
+    permissions: "0755"
+
 # Run commands
 runcmd:
   # Install Tailscale
@@ -303,12 +313,14 @@ runcmd:
       "-c",
       "echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf && echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf && sudo sysctl -p /etc/sysctl.d/99-tailscale.conf",
     ]
+  - ["/etc/networkd-dispatcher/routable.d/50-tailscale"]
   - [
       "tailscale",
       "up",
       "--auth-key=${tailscale_auth_key}",
       "--hostname=${hostname}",
-      "--advertise-tags=tag:kubernetes-master",
+      "--advertise-routes=10.244.0.0/16,10.96.0.0/12",
+      "--accept-routes",
     ]
   - ["tailscale", "set", "--ssh"]
   - ["tailscale", "set", "--advertise-exit-node"]
@@ -319,6 +331,6 @@ runcmd:
 
 # Final settings
 power_state:
-  delay: 2
+  delay: 1
   mode: reboot
   condition: true

@@ -1,0 +1,9 @@
+variable "cloudflare_api_token" {
+  type        = string
+  description = "The Cloudflare API token with DNS Edit permissions"
+}
+
+variable "controller_ipv4_address" {
+  type        = string
+  description = "The IPv4 address of the controller"
+}
