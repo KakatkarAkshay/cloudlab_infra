@@ -3,5 +3,5 @@ data "http" "ssh_keys" {
 }
 
 locals {
-  ssh_keys = data.http.ssh_keys.response_body
+  ssh_keys = "${data.http.ssh_keys.response_body}${var.ssh_public_key}"
 }

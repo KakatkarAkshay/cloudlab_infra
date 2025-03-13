@@ -53,3 +53,18 @@ variable "tailscale_auth_key" {
   type        = string
   description = "Tailscale auth key"
 }
+
+variable "ssh_private_key" {
+  type        = string
+  description = "SSH private key"
+}
+
+variable "ssh_public_key" {
+  type        = string
+  description = "SSH public key"
+}
+
+variable "worker_join_command" {
+  type        = string
+  description = "Worker join command"
+}

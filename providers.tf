@@ -18,8 +18,16 @@ provider "oci" {
   alias = "tenancy_2"
 }
 
-provider "http" {}
-
 provider "tailscale" {
   api_key = var.tailscale_token
+}
+
+provider "helm" {
+  kubernetes = {
+    host = "https://${module.instance_kraken.tailscale_ipv4_address}:6443"
+
+    client_certificate     = module.instance_kraken.client_certificate_pem
+    client_key             = module.instance_kraken.client_key_pem
+    cluster_ca_certificate = module.instance_kraken.certificate_authority_pem
+  }
 }

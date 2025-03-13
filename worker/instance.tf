@@ -1,4 +1,4 @@
-resource "oci_core_instance" "karken" {
+resource "oci_core_instance" "instance" {
   availability_domain = local.availability_domain
   compartment_id      = var.oci_compartment
   display_name        = var.display_name
@@ -25,9 +25,23 @@ resource "oci_core_instance" "karken" {
 
   metadata = {
     ssh_authorized_keys = local.ssh_keys
-    user_data = base64encode(templatefile("${path.module}/cloudinit/tailnet.tftpl", {
-      hostname           = lower(var.display_name),
-      tailscale_auth_key = var.tailscale_auth_key
+    user_data = base64encode(templatefile("${path.module}/cloudinit/worker.tftpl", {
+      hostname            = lower(var.display_name)
+      tailscale_auth_key  = var.tailscale_auth_key
+      worker_join_command = var.worker_join_command
     }))
+  }
+
+  connection {
+    type        = "ssh"
+    host        = self.public_ip
+    user        = "ubuntu"
+    private_key = var.ssh_private_key
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "cloud-init status --wait > /dev/null"
+    ]
   }
 }
