@@ -2,5 +2,5 @@ flannel:
   args:
     - "--ip-masq"
     - "--kube-subnet-mgr"
-    - "--flannel-ipv6-masq"
-    - ""
+    - "--iface=tailscale0"
+  backend: "host-gw"

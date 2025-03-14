@@ -4,13 +4,9 @@ resource "helm_release" "flannel" {
   chart            = "flannel"
   namespace        = "kube-flannel"
   create_namespace = true
+  atomic           = true
 
-  set = [
-    {
-      name  = "podCidr"
-      value = "10.244.0.0/16"
-    }
-  ]
+  values = [file("${path.module}/values/flannel.yaml")]
 }
 
 resource "time_sleep" "wait_for_flannel" {

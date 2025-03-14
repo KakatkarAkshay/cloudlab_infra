@@ -4,6 +4,7 @@ resource "helm_release" "traefik" {
   chart            = "traefik"
   namespace        = "traefik"
   create_namespace = true
+  atomic           = true
 
   values = [templatefile("${path.module}/values/traefik.tftpl", {
     cloudflare_api_token = var.cloudflare_api_token
