@@ -12,7 +12,7 @@ resource "helm_release" "longhorn" {
 resource "time_sleep" "wait_for_longhorn" {
   depends_on = [helm_release.longhorn]
 
-  create_duration = "30s"
+  create_duration = "3m"
 }
 
 resource "kubectl_manifest" "longhorn_ingress" {
