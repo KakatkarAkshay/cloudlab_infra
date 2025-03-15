@@ -49,11 +49,6 @@ variable "github_username" {
   default     = "KakatkarAkshay"
 }
 
-variable "tailscale_auth_key" {
-  type        = string
-  description = "Tailscale auth key"
-}
-
 variable "ssh_private_key" {
   type        = string
   description = "SSH private key"

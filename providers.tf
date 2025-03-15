@@ -25,7 +25,7 @@ provider "tailscale" {
 
 provider "helm" {
   kubernetes = {
-    host = "https://${module.instance_kraken.tailscale_ipv4_address}:6443"
+    host = "https://${module.instance_kraken.private_ip}:6443"
 
     client_certificate     = module.instance_kraken.client_certificate_pem
     client_key             = module.instance_kraken.client_key_pem

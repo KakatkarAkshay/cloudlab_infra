@@ -10,7 +10,13 @@ resource "helm_release" "traefik" {
     cloudflare_api_token = var.cloudflare_api_token
   })]
 
-  depends_on = [time_sleep.wait_for_flannel]
+  depends_on = [kubectl_manifest.traefik_volume]
+}
+
+resource "kubectl_manifest" "traefik_volume" {
+  yaml_body = file("${path.module}/manifests/traefik-volume.yaml")
+
+  depends_on = [time_sleep.wait_for_longhorn]
 }
 
 resource "time_sleep" "wait_for_traefik" {

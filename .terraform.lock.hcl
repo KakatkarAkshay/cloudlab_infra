@@ -1,6 +1,18 @@
 # This file is maintained automatically by "terraform init".
 # Manual edits may be lost in future updates.
 
+provider "registry.terraform.io/bnu0/kubectl" {
+  version     = "0.27.0"
+  constraints = "0.27.0"
+  hashes = [
+    "h1:2uuZOJMgE8X0PgoRo+Oh4fZYm6kxnvmwiQMDv14L4os=",
+    "zh:2f126955c4e2533746e89343d3a79364cd7c4d8d4ec242c2dae9f8c40a8f8673",
+    "zh:479f585efa0be0c0ad131512e1b0131f0daebd36837435cbc8275f617dfa29c4",
+    "zh:5572e02223f09e33c0caaf388d64c9132df6f7c87a72ff83339d3c63dcedcb9d",
+    "zh:952f3d160208ade7bcd87c41d3b735a7fc7b4200ab87ea33e5a1494fd15c69fb",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/external" {
   version = "2.3.4"
   hashes = [

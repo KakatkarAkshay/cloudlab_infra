@@ -2,5 +2,4 @@ flannel:
   args:
     - "--ip-masq"
     - "--kube-subnet-mgr"
-    - "--iface=tailscale0"
-  backend: "host-gw"
+  backend: "vxlan"

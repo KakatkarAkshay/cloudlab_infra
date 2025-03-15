@@ -26,8 +26,8 @@ resource "oci_core_instance" "instance" {
   metadata = {
     ssh_authorized_keys = local.ssh_keys
     user_data = base64encode(templatefile("${path.module}/cloudinit/master.tftpl", {
-      hostname            = lower("${var.display_name}-${random_password.hostname_suffix.result}"),
-      tailscale_auth_key  = var.tailscale_auth_key,
+      hostname            = lower(var.display_name)
+      tailscale_auth_key  = var.tailscale_auth_key
       ca_cert_pem         = base64encode(tls_self_signed_cert.k8s_ca_cert.cert_pem)
       ca_key_pem          = base64encode(tls_private_key.k8s_ca_key.private_key_pem)
       apiserver_key_pem   = base64encode(tls_private_key.k8s_apiserver_key.private_key_pem)
@@ -36,6 +36,7 @@ resource "oci_core_instance" "instance" {
       ssh_host_pubkey_pem = tls_private_key.ssh_host_key.public_key_openssh
       bootstrap_token     = local.bootstrap_token
       certificate_key     = local.certificate_key
+      advertise_routes    = join(",", var.advertise_routes)
     }))
   }
 
@@ -51,4 +52,12 @@ resource "oci_core_instance" "instance" {
       "cloud-init status --wait > /dev/null"
     ]
   }
+}
+
+output "public_ip" {
+  value = oci_core_instance.instance.public_ip
+}
+
+output "private_ip" {
+  value = oci_core_instance.instance.private_ip
 }

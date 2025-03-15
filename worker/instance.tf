@@ -26,11 +26,10 @@ resource "oci_core_instance" "instance" {
   metadata = {
     ssh_authorized_keys = local.ssh_keys
     user_data = base64encode(templatefile("${path.module}/cloudinit/worker.tftpl", {
-      hostname           = lower(var.display_name)
-      tailscale_auth_key = var.tailscale_auth_key
-      bootstrap_token    = var.bootstrap_token
-      ca_cert_hash       = var.ca_cert_hash
-      master_ip          = var.master_ip
+      hostname        = lower(var.display_name)
+      bootstrap_token = var.bootstrap_token
+      ca_cert_hash    = var.ca_cert_hash
+      master_ip       = var.master_ip
     }))
   }
 

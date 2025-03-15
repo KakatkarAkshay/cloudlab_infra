@@ -7,3 +7,9 @@ variable "controller_ipv4_address" {
   type        = string
   description = "The IPv4 address of the controller"
 }
+
+variable "domain" {
+  type        = string
+  description = "The domain name of the cluster"
+  default     = "kakatkarakshay.dev"
+}

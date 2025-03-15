@@ -2,7 +2,7 @@ module "kubernetes_deployments" {
   source = "./deployments"
 
   cloudflare_api_token    = var.cloudflare_api_token
-  controller_ipv4_address = module.instance_kraken.tailscale_ipv4_address
+  controller_ipv4_address = module.instance_kraken.private_ip
 
   depends_on = [module.instance_kraken, module.instance_chimera, module.instance_leviathan, module.instance_vortex]
 }
@@ -23,7 +23,7 @@ resource "null_resource" "create_kube_dir" {
 resource "local_file" "kubeconfig" {
   content = templatefile("${path.module}/templates/kubeconfig.tftpl", {
     certificate_authority_data = base64encode(module.instance_kraken.certificate_authority_pem)
-    kubernetes_server          = "https://${module.instance_kraken.tailscale_ipv4_address}:6443"
+    kubernetes_server          = "https://${module.instance_kraken.private_ip}:6443"
     client-certificate-data    = base64encode(module.instance_kraken.client_certificate_pem)
     client-key-data            = base64encode(module.instance_kraken.client_key_pem)
   })

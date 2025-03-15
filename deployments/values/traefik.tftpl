@@ -39,3 +39,8 @@ environment:
 tlsOptions:
   default:
     minVersion: "VersionTLS12"
+
+persistence:
+  enabled: true
+  name: data
+  existingClaim: traefik-certs

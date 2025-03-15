@@ -1,24 +1,24 @@
-variable "oci_tenancy_1_user" {
-  type        = string
-  description = "OCI user"
-  sensitive   = true
-}
-
-variable "oci_tenancy_2_user" {
-  type        = string
-  description = "OCI user"
-  sensitive   = true
-}
-
 variable "oci_tenancy_1" {
   type        = string
   description = "OCI tenancy"
   sensitive   = true
 }
 
+variable "oci_tenancy_1_user" {
+  type        = string
+  description = "OCI user"
+  sensitive   = true
+}
+
 variable "oci_tenancy_2" {
   type        = string
   description = "OCI tenancy"
+  sensitive   = true
+}
+
+variable "oci_tenancy_2_user" {
+  type        = string
+  description = "OCI user"
   sensitive   = true
 }
 
@@ -43,6 +43,12 @@ variable "oci_instance_shape" {
   type        = string
   description = "OCI instance shape"
   default     = "VM.Standard.A1.Flex"
+}
+
+variable "oci_requestor_group" {
+  type        = string
+  description = "OCI requestor group"
+  sensitive   = true
 }
 
 variable "cloudflare_api_token" {

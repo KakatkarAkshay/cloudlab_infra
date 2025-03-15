@@ -69,8 +69,7 @@ variable "tailscale_auth_key" {
   sensitive   = true
 }
 
-variable "tailnet_dns_name" {
-  type        = string
-  description = "Tailnet DNS name"
-  sensitive   = true
+variable "advertise_routes" {
+  type        = list(string)
+  description = "Advertise routes"
 }

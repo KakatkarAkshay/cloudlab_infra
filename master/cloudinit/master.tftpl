@@ -17,6 +17,8 @@ packages:
   - containerd
   - software-properties-common
   - networkd-dispatcher
+  - iptables
+  - iptables-persistent
 
 # Configure sysctl settings for Kubernetes
 write_files:
@@ -94,14 +96,10 @@ write_files:
         description: "default bootstrap token"
         ttl: "24h"
       localAPIEndpoint:
-        advertiseAddress: "MASTER_IPV4_ADDRESS"
         bindPort: 6443
       certificateKey: "${certificate_key}"
       nodeRegistration:
         criSocket: "unix:///run/containerd/containerd.sock"
-        kubeletExtraArgs:
-          - name: node-ip
-            value: "MASTER_IPV4_ADDRESS"
         taints:
           - key: "node-role.kubernetes.io/control-plane"
             value: "true"
@@ -111,9 +109,6 @@ write_files:
       kind: ClusterConfiguration
       kubernetesVersion: v1.32.2
       apiServer:
-        certSANs:
-        - "MASTER_IPV4_ADDRESS"
-        - "MASTER_IPV6_ADDRESS"
         extraArgs:
           - name: enable-bootstrap-token-auth
             value: "true"
@@ -172,16 +167,6 @@ write_files:
       chmod 644 /etc/ssh/ssh_host_ed25519_key.pub
       systemctl restart ssh
 
-      # Wait for Tailscale to be ready
-      echo "Waiting for Tailscale to be ready..."
-      until tailscale status >/dev/null 2>&1; do
-        sleep 5
-      done
-
-      # Get Tailscale IP addresses
-      MASTER_IPV4=$(tailscale ip -4)
-      MASTER_IPV6=$(tailscale ip -6)
-
       # Create directories for certificates
       mkdir -p /etc/kubernetes/pki
 
@@ -190,6 +175,10 @@ write_files:
       mv /tmp/ca.key /etc/kubernetes/pki/
       mv /tmp/apiserver.key /etc/kubernetes/pki/apiserver.key
       mv /tmp/client.key /etc/kubernetes/pki/client.key
+
+      # Get the IP address of the master node
+      MASTER_IPV4=$(echo -n $(hostname -I | awk '{print $1}'))
+      MASTER_IPV6=$(echo -n $(hostname -I | awk '{print $2}'))
 
       # Generate CSR configuration for API server certificate
       cat > /tmp/csr.conf << EOF
@@ -251,10 +240,6 @@ write_files:
       apt-get install -y kubelet kubeadm kubectl
       apt-mark hold kubelet kubeadm kubectl
 
-      # Replace placeholder with actual IP addresses in kubeadm config
-      sed -i "s/MASTER_IPV4_ADDRESS/$MASTER_IPV4/g" /etc/kubernetes/kubeadm-config.yaml
-      sed -i "s/MASTER_IPV6_ADDRESS/$MASTER_IPV6/g" /etc/kubernetes/kubeadm-config.yaml
-
       # Initialize kubernetes cluster
       kubeadm init --config=/etc/kubernetes/kubeadm-config.yaml --upload-certs
 
@@ -276,7 +261,7 @@ write_files:
       clusters:
       - cluster:
           certificate-authority: /etc/kubernetes/pki/ca.crt
-          server: https://$MASTER_IPV4:6443
+          server: https://localhost:6443
         name: bootstrap
       contexts:
       - context:
@@ -296,6 +281,30 @@ write_files:
       echo "Kubernetes master node setup completed successfully!"
     permissions: "0755"
 
+  # Configure iptables rules to allow all traffic (We're using oracle cloud firewall for security)
+  - path: /etc/iptables/rules.v4
+    content: |
+      *filter
+      :INPUT ACCEPT [0:0]
+      :FORWARD ACCEPT [0:0]
+      :OUTPUT ACCEPT [0:0]
+      COMMIT
+      *nat
+      :PREROUTING ACCEPT [0:0]
+      :INPUT ACCEPT [0:0]
+      :OUTPUT ACCEPT [0:0]
+      :POSTROUTING ACCEPT [0:0]
+      COMMIT
+    permissions: "0644"
+  - path: /etc/iptables/rules.v6
+    content: |
+      *filter
+      :INPUT ACCEPT [0:0]
+      :FORWARD ACCEPT [0:0]
+      :OUTPUT ACCEPT [0:0]
+      COMMIT
+    permissions: "0644"
+
   - path: /etc/networkd-dispatcher/routable.d/50-tailscale
     content: |
       #!/bin/sh
@@ -305,6 +314,18 @@ write_files:
 
 # Run commands
 runcmd:
+  # Enable iptables persistence
+  - ["iptables", "-F"]
+  - ["iptables", "-P", "INPUT", "ACCEPT"]
+  - ["iptables", "-P", "FORWARD", "ACCEPT"]
+  - ["iptables", "-P", "OUTPUT", "ACCEPT"]
+  - ["ip6tables", "-F"]
+  - ["ip6tables", "-P", "INPUT", "ACCEPT"]
+  - ["ip6tables", "-P", "FORWARD", "ACCEPT"]
+  - ["ip6tables", "-P", "OUTPUT", "ACCEPT"]
+  - ["netfilter-persistent", "save"]
+  - ["systemctl", "enable", "netfilter-persistent"]
+
   # Install Tailscale
   - ["sh", "-c", "curl -fsSL https://tailscale.com/install.sh | sh"]
 
@@ -320,8 +341,8 @@ runcmd:
       "up",
       "--auth-key=${tailscale_auth_key}",
       "--hostname=${hostname}",
-      "--advertise-routes=10.244.0.0/16,10.96.0.0/12",
-      "--accept-routes",
+      "--advertise-routes=${advertise_routes}",
+      "--advertise-tags=tag:kubernetes-node",
     ]
   - ["tailscale", "set", "--ssh"]
   - ["tailscale", "set", "--advertise-exit-node"]
