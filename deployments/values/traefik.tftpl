@@ -10,6 +10,8 @@ ingressRoute:
     matchRule: Host(`traefik.${domain}`)
     tls:
       certResolver: prod
+    middlewares:
+      - name: traefik-middleware
 
 deployment:
   replicas: 3

@@ -2,18 +2,16 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: longhorn-ingress
-  namespace: longhorn-system
+  name: authentik
+  namespace: authentik
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`longhorn.${domain}`)
+    - match: Host(`auth.${domain}`)
       kind: Rule
       services:
-        - name: longhorn-frontend
+        - name: authentik-server
           port: 80
-      middlewares:
-        - name: longhorn-middleware
   tls:
     certResolver: prod

@@ -29,3 +29,9 @@ resource "time_sleep" "wait_for_traefik" {
 
   create_duration = "30s"
 }
+
+resource "kubectl_manifest" "traefik_middleware" {
+  yaml_body = file("${path.module}/manifests/traefik/middleware.yaml")
+
+  depends_on = [time_sleep.wait_for_traefik]
+}

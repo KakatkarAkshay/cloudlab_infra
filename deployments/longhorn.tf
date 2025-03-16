@@ -22,3 +22,9 @@ resource "kubectl_manifest" "longhorn_ingress" {
 
   depends_on = [time_sleep.wait_for_traefik]
 }
+
+resource "kubectl_manifest" "longhorn_middleware" {
+  yaml_body = file("${path.module}/manifests/longhorn/middleware.yaml")
+
+  depends_on = [time_sleep.wait_for_longhorn]
+}
