@@ -15,13 +15,7 @@ resource "helm_release" "traefik" {
     domain               = var.domain
   })]
 
-  depends_on = [kubectl_manifest.traefik_volume]
-}
-
-resource "kubectl_manifest" "traefik_volume" {
-  yaml_body = file("${path.module}/manifests/traefik/volume.yaml")
-
-  depends_on = [time_sleep.wait_for_longhorn, kubectl_manifest.traefik_namespace]
+  depends_on = [time_sleep.wait_for_longhorn]
 }
 
 resource "time_sleep" "wait_for_traefik" {
