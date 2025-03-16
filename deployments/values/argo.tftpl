@@ -1,0 +1,29 @@
+global:
+  domain: argo.${domain}
+
+server:
+  ingress:
+    enabled: false
+
+configs:
+  params:
+    server.insecure: true
+  cm:
+    dex.config: |
+      connectors:
+      - config:
+          issuer: https://auth.${domain}/application/o/argocd/
+          clientID: ${authentik_client_id}
+          clientSecret: ${authentik_client_secret}
+          insecureEnableGroups: true
+          scopes:
+            - openid
+            - profile
+            - email
+        name: authentik
+        type: oidc
+        id: authentik
+  rbac:
+    policy.csv: |
+      g, Administrators, role:admin
+      g, Viewers, role:readonly

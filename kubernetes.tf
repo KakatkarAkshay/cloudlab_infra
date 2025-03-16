@@ -1,9 +1,11 @@
 module "kubernetes_deployments" {
   source = "./deployments"
 
-  cloudflare_api_token    = var.cloudflare_api_token
-  controller_ipv4_address = module.instance_kraken.private_ip
-  certresolver_email      = var.certresolver_email
+  cloudflare_api_token           = var.cloudflare_api_token
+  controller_ipv4_address        = module.instance_kraken.private_ip
+  certresolver_email             = var.certresolver_email
+  argocd_authentik_client_id     = var.argocd_authentik_client_id
+  argocd_authentik_client_secret = var.argocd_authentik_client_secret
 
   depends_on = [module.instance_kraken, module.instance_chimera, module.instance_leviathan, module.instance_vortex]
 }
