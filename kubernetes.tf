@@ -3,6 +3,7 @@ module "kubernetes_deployments" {
 
   cloudflare_api_token    = var.cloudflare_api_token
   controller_ipv4_address = module.instance_kraken.private_ip
+  certresolver_email      = var.certresolver_email
 
   depends_on = [module.instance_kraken, module.instance_chimera, module.instance_leviathan, module.instance_vortex]
 }

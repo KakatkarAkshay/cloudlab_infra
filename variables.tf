@@ -57,6 +57,12 @@ variable "cloudflare_api_token" {
   sensitive   = true
 }
 
+variable "cloudflare_zone_id" {
+  type        = string
+  description = "The Cloudflare zone ID"
+  sensitive   = true
+}
+
 variable "tailscale_client_id" {
   type        = string
   description = "Tailscale client ID"
@@ -73,4 +79,9 @@ variable "tailnet_dns_name" {
   type        = string
   description = "Tailnet DNS name"
   sensitive   = true
+}
+
+variable "certresolver_email" {
+  type        = string
+  description = "The email address for the certresolver"
 }

@@ -12,11 +12,11 @@ resource "helm_release" "longhorn" {
 resource "time_sleep" "wait_for_longhorn" {
   depends_on = [helm_release.longhorn]
 
-  create_duration = "3m"
+  create_duration = "5m"
 }
 
 resource "kubectl_manifest" "longhorn_ingress" {
-  yaml_body = templatefile("${path.module}/manifests/longhorn-ingress.tftpl", {
+  yaml_body = templatefile("${path.module}/manifests/longhorn/ingress.tftpl", {
     domain = var.domain
   })
 

@@ -32,3 +32,7 @@ provider "helm" {
     cluster_ca_certificate = module.instance_kraken.certificate_authority_pem
   }
 }
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}

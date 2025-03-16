@@ -13,3 +13,8 @@ variable "domain" {
   description = "The domain name of the cluster"
   default     = "kakatkarakshay.dev"
 }
+
+variable "certresolver_email" {
+  type        = string
+  description = "The email address for the certresolver"
+}

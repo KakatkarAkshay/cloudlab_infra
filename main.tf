@@ -24,5 +24,9 @@ terraform {
       source  = "bnu0/kubectl"
       version = "0.27.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5"
+    }
   }
 }

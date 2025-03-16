@@ -46,3 +46,7 @@ resource "oci_core_instance" "instance" {
     ]
   }
 }
+
+output "public_ip" {
+  value = oci_core_instance.instance.public_ip
+}
