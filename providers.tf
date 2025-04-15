@@ -23,16 +23,6 @@ provider "tailscale" {
   oauth_client_secret = var.tailscale_client_secret
 }
 
-provider "helm" {
-  kubernetes = {
-    host = "https://${module.instance_kraken.private_ip}:6443"
-
-    client_certificate     = module.instance_kraken.client_certificate_pem
-    client_key             = module.instance_kraken.client_key_pem
-    cluster_ca_certificate = module.instance_kraken.certificate_authority_pem
-  }
-}
-
 provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }

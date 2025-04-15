@@ -1,5 +1,0 @@
-flannel:
-  args:
-    - "--ip-masq"
-    - "--kube-subnet-mgr"
-  backend: "vxlan"
