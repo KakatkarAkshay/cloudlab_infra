@@ -80,20 +80,3 @@ variable "tailnet_dns_name" {
   description = "Tailnet DNS name"
   sensitive   = true
 }
-
-variable "certresolver_email" {
-  type        = string
-  description = "The email address for the certresolver"
-}
-
-variable "argocd_authentik_client_id" {
-  type        = string
-  description = "The ArgoCD authentik client ID"
-  sensitive   = true
-}
-
-variable "argocd_authentik_client_secret" {
-  type        = string
-  description = "The ArgoCD authentik client secret"
-  sensitive   = true
-}
